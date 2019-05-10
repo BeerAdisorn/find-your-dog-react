@@ -1,24 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-function App() {
+function ButtonDog(props) {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="mb-1">
+      <button type="button" className="btn btn-outline-success">{props.breed}</button>
+    </div>
+  );
+}
+function App() {
+  const [dogs, setDogs] = useState([])
+
+  useEffect(() => {
+    axios.get("https://dog.ceo/api/breeds/list/all").then((res) => {
+      setDogs(Object.keys(res.data.message))
+      console.log(Object.keys(res.data.message))
+    })
+  },[])
+  return (
+    <div className="container">
+      <h1 className="text-center"> Find-your-dog </h1>
+      {dogs.map((dog) => <ButtonDog breed={dog} />)}
+
     </div>
   );
 }
